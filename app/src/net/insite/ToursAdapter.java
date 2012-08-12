@@ -12,14 +12,12 @@ import android.widget.TextView;
 public class ToursAdapter extends BaseAdapter {
 
 	private List<Tour> data;
-	private ViewGroup parent;
-	private int childId;
+	private int layoutId;
 	private Context context;
 	
-	public ToursAdapter(Context context, ViewGroup parent, int childId){
+	public ToursAdapter(Context context, int layoutId){
 		this.context = context;
-		this.parent = parent;
-		this.childId = childId;
+		this.layoutId = layoutId;
 		
 	}
 
@@ -40,7 +38,7 @@ public class ToursAdapter extends BaseAdapter {
 
 	public View getView(int index, View view, ViewGroup viewGroup) {
 		Log.i("ToursAdapter", "getvView");
-		View newView = View.inflate(context, childId, null);
+		View newView = View.inflate(context, layoutId, null);
 		TextView textView = (TextView)newView.findViewById(R.id.textView1);
 		textView.setText(data.get(index).getTitle());
 		return newView;

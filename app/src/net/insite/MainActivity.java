@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void viewTour1(View view) {
-		Intent intent = new Intent(this, ViewTourActivity.class);
+		Intent intent = new Intent(this, ViewToursActivity.class);
 		startActivity(intent);
 	}
 }

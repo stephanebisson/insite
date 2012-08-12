@@ -1,6 +1,11 @@
 package net.insite;
 
-public class Tour {
+import java.io.Serializable;
+
+public class Tour implements Serializable 
+{
+	private static final long serialVersionUID = -5897503972576883258L;
+	
 	private String title;
 
 	public Tour(String title) {
