@@ -1,12 +1,13 @@
 package net.insite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-public class TourLoader extends AsyncTaskLoader<Cursor> {
+public class TourLoader extends AsyncTaskLoader<List<Tour>> {
 
 	public TourLoader(Context context) {
 		super(context);
@@ -14,13 +15,13 @@ public class TourLoader extends AsyncTaskLoader<Cursor> {
 	}
 
 	@Override
-	public Cursor loadInBackground() {
+	public List<Tour> loadInBackground() {
 		Log.i("TourLoader","loadInBackground");
-		MatrixCursor data = new MatrixCursor(new String[]{"_id", "text"});
-		data.addRow(new Object[]{1, "text_1"});
-		data.addRow(new Object[]{2, "text_2"});
-		data.addRow(new Object[]{3, "text_3"});
-		return data;
+		List<Tour> tours = new ArrayList<Tour>();
+		tours.add(new Tour("Visite du Louvres"));
+		tours.add(new Tour("La tour Effel"));
+		tours.add(new Tour("Les Jardins de Brel"));
+		return tours;
 	}
 	
 }
