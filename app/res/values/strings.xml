@@ -6,5 +6,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_view_tour">ViewTourActivity</string>
     <string name="title_activity_one_tour">OneTourActivity</string>
+    <string name="title_activity_chapter">ChapterActivity</string>
 
 </resources>

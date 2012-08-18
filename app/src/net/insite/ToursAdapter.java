@@ -2,6 +2,8 @@ package net.insite;
 
 import java.util.List;
 
+import net.insite.domain.Tour;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +39,7 @@ public class ToursAdapter extends BaseAdapter {
 	}
 
 	public View getView(int index, View view, ViewGroup viewGroup) {
-		Log.i("ToursAdapter", "getvView");
+		Log.i("ToursAdapter", "getView");
 		View newView = View.inflate(context, layoutId, null);
 		TextView textView = (TextView)newView.findViewById(R.id.textView1);
 		textView.setText(data.get(index).getTitle());
