@@ -2,6 +2,7 @@ package net.insite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.insite.domain.Chapter;
 import net.insite.domain.Tour;
@@ -23,19 +24,24 @@ public class TourLoader extends AsyncTaskLoader<List<Tour>> {
 	public List<Tour> loadInBackground() {
 		Log.i("TourLoader","loadInBackground");
 		List<Tour> tours = new ArrayList<Tour>();
-		tours.add(addChapters(new Tour("Visite du Louvres")));
-		tours.add(addChapters(new Tour("La tour Effel")));
-		tours.add(addChapters(new Tour("Les Jardins de Brel")));
+		tours.add(addChapters(new Tour("t1", "Visite du Louvres")));
+		tours.add(addChapters(new Tour("t2", "La tour Effel")));
+		tours.add(addChapters(new Tour("t3", "Les Jardins de Brel")));
 		return tours;
 	}
 	
 	private Tour addChapters(Tour t) {
 		List<Chapter> chapters = new ArrayList<Chapter>();
-		chapters.add(new Chapter("Intro", LOREM_IPSUM));
-		chapters.add(new Chapter("second part", LOREM_IPSUM));
-		chapters.add(new Chapter("the big thing", LOREM_IPSUM));
+		
+		chapters.add(new Chapter(newId(t, 1), "Intro", LOREM_IPSUM));
+		chapters.add(new Chapter(newId(t, 2), "second part", LOREM_IPSUM));
+		chapters.add(new Chapter(newId(t, 3), "the big thing", LOREM_IPSUM));
 		t.setChapters(chapters);
 		return t;
+	}
+	
+	private String newId(Tour tour, int i) {
+		return tour.getId() + "c" + i;
 	}
 	
 }

@@ -6,7 +6,6 @@ import net.insite.R;
 import net.insite.domain.Chapter;
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -37,7 +36,7 @@ public class ChapterActivity extends Activity {
 		chapterTextTextBox.setText(chapter.getText());
 		
 		Intent intent = new Intent(this, ChapterPlayer.class);
-		boolean result = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		boolean result = bindService(intent, mConnection, 0);
 		Log.i("ChapterActivity", "bindService " + result);
 	}
 
@@ -60,13 +59,25 @@ public class ChapterActivity extends Activity {
 
 	public void play(View view) throws Exception {
 		Log.i("ChapterActivity", "play " + (mBound ? "bound" : "unbound"));
-		if (player.isPlaying()) {
+		if (isPlayingMyChapter()) {
 			player.pause();
-			setButtonText("PLAY");
 		}
 		else {
-			player.play();
+			player.play(chapter);
+		}
+		updateBtnText();
+	}
+	
+	private boolean isPlayingMyChapter() {
+		return player.isPlaying(chapter);
+	}
+	
+	private void updateBtnText() {
+		if (isPlayingMyChapter()) {
 			setButtonText("PAUSE");
+		}
+		else {
+			setButtonText("PLAY");
 		}
 	}
 	
@@ -77,6 +88,7 @@ public class ChapterActivity extends Activity {
             LocalBinder binder = (LocalBinder) service;
             player = binder.getService();
             mBound = true;
+            updateBtnText();
             Log.i("ChapterActivity", "bound");
         }
 

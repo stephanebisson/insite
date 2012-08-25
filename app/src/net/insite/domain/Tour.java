@@ -9,9 +9,12 @@ public class Tour implements Serializable
 	
 	private String title;
 	
+	private String id;
+	
 	private List<Chapter> chapters;
 
-	public Tour(String title) {
+	public Tour(String id, String title) {
+		this.id = id;
 		this.title = title;
 	}
 
@@ -29,5 +32,13 @@ public class Tour implements Serializable
 
 	public void setChapters(List<Chapter> chapters) {
 		this.chapters = chapters;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }
