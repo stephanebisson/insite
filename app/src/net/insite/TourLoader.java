@@ -1,7 +1,16 @@
 package net.insite;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+import com.mongodb.MongoURI;
 
 import net.insite.domain.Chapter;
 import net.insite.domain.Tour;
@@ -23,9 +32,24 @@ public class TourLoader extends AsyncTaskLoader<List<Tour>> {
 	public List<Tour> loadInBackground() {
 		Log.i("TourLoader","loadInBackground");
 		List<Tour> tours = new ArrayList<Tour>();
-		tours.add(addChapters(new Tour("t1", "Visite du Louvres")));
-		tours.add(addChapters(new Tour("t2", "La tour Effel")));
-		tours.add(addChapters(new Tour("t3", "Les Jardins de Brel")));
+//		tours.add(addChapters(new Tour("t1", "Visite du Louvres")));
+//		tours.add(addChapters(new Tour("t2", "La tour Effel")));
+//		tours.add(addChapters(new Tour("t3", "Les Jardins de Brel")));
+		
+		try {
+			Mongo m = new Mongo("127.0.0.1", 27017);
+			DB db = m.getDB("insite");
+			DBCollection col = db.getCollection("tour");
+			DBCursor cur = col.find();
+			for (DBObject o : cur) {
+				Tour t = new Tour(o.get("_id").toString(), o.get("title").toString());
+				tours.add(t);
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return tours;
 	}
 	
