@@ -5,8 +5,11 @@ import net.insite.ChapterPlayer.LocalBinder;
 import net.insite.R;
 import net.insite.domain.Chapter;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -22,6 +25,14 @@ public class ChapterActivity extends Activity {
 	protected ChapterPlayer player;
 	protected boolean mBound;
 
+	BroadcastReceiver receiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.i("ChapterActivity", "received intent " + intent.getAction());
+			updateBtnText();
+		}
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,10 +45,23 @@ public class ChapterActivity extends Activity {
 
 		TextView chapterTextTextBox = (TextView) findViewById(R.id.chapter_details_text);
 		chapterTextTextBox.setText(chapter.getText());
-		
+
 		Intent intent = new Intent(this, ChapterPlayer.class);
 		boolean result = bindService(intent, mConnection, 0);
 		Log.i("ChapterActivity", "bindService " + result);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		registerReceiver(receiver, new IntentFilter(
+				ChapterPlayer.REFRESH_PLAY_BUTTON));
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(receiver);
 	}
 
 	@Override
@@ -60,42 +84,45 @@ public class ChapterActivity extends Activity {
 
 	public void play(View view) throws Exception {
 		Log.i("ChapterActivity", "play " + (mBound ? "bound" : "unbound"));
-		if (isPlayingMyChapter()) {
-			player.pause();
-		}
-		else {
+		if (player.myChapter(chapter)) {
+			if (player.isPlaying()) {
+				player.pause();
+			} else {
+				player.resume();
+			}
+		} else {
 			player.play(chapter);
 		}
 		updateBtnText();
 	}
-	
+
 	private boolean isPlayingMyChapter() {
 		return player.isPlaying(chapter);
 	}
-	
+
 	private void updateBtnText() {
 		if (isPlayingMyChapter()) {
 			setButtonText("PAUSE");
-		}
-		else {
+		} else {
 			setButtonText("PLAY");
 		}
 	}
-	
+
 	private ServiceConnection mConnection = new ServiceConnection() {
 
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            LocalBinder binder = (LocalBinder) service;
-            player = binder.getService();
-            mBound = true;
-            updateBtnText();
-            Log.i("ChapterActivity", "bound");
-        }
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			// We've bound to LocalService, cast the IBinder and get
+			// LocalService instance
+			LocalBinder binder = (LocalBinder) service;
+			player = binder.getService();
+			mBound = true;
+			updateBtnText();
+			Log.i("ChapterActivity", "bound");
+		}
 
-        public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
-            Log.i("ChapterActivity", "unbound");
-        }
-    };
+		public void onServiceDisconnected(ComponentName arg0) {
+			mBound = false;
+			Log.i("ChapterActivity", "unbound");
+		}
+	};
 }
