@@ -27,6 +27,13 @@ public class ChapterPlayer extends Service {
 	}
 
 	public boolean isPlaying(Chapter chapter) {
+		if (currentChapter != null && chapter != null) {
+			Log.i("ASDF", "player   :" + currentChapter.getId());
+			Log.i("ASDF", "activity :" + chapter.getId());
+			Log.i("ASDF", "same?    :" + (chapter.getId() == currentChapter.getId()));
+		} else {
+			Log.i("ASDF", "nulls");
+		}
 		return isPlaying() && myChapter(chapter);
 	}
 

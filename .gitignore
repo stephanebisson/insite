@@ -1,2 +1,4 @@
 *.class
 app/bin
+.DS_Store
+test/bin

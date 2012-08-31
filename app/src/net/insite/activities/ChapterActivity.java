@@ -49,6 +49,7 @@ public class ChapterActivity extends Activity {
 	private void setButtonText(String text) {
 		Button btn = (Button) findViewById(R.id.play_chapter_btn);
 		btn.setText(text);
+		Log.i("ASDF", "set button text to " + text);
 	}
 
 	@Override
