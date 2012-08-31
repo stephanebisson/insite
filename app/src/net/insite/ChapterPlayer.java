@@ -105,13 +105,11 @@ public class ChapterPlayer extends Service implements OnCompletionListener {
 	}
 
 	public void onCompletion(MediaPlayer arg0) {
-		
 		stopForeground(false);
 		Intent i = new Intent();
 		i.setAction(REFRESH_PLAY_BUTTON);
 		Log.i("ChapterPlayer", "broadcasting " + i.getAction());
 		sendBroadcast(i);
-		
 	}
 	
 	@Override

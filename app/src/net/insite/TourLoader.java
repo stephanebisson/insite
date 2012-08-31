@@ -31,7 +31,6 @@ public class TourLoader extends AsyncTaskLoader<List<Tour>> {
 	
 	private Tour addChapters(Tour t) {
 		List<Chapter> chapters = new ArrayList<Chapter>();
-		
 		chapters.add(new Chapter(newId(t, 1), "Intro", LOREM_IPSUM, R.raw.first));
 		chapters.add(new Chapter(newId(t, 2), "second part", LOREM_IPSUM, R.raw.second));
 		chapters.add(new Chapter(newId(t, 3), "the big thing", LOREM_IPSUM, R.raw.third));
