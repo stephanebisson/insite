@@ -37,7 +37,7 @@ public class TourLoader extends AsyncTaskLoader<List<Tour>> {
 //		tours.add(addChapters(new Tour("t3", "Les Jardins de Brel")));
 		
 		try {
-			Mongo m = new Mongo("127.0.0.1", 27017);
+			Mongo m = new Mongo("localhost", 27017);
 			DB db = m.getDB("insite");
 			DBCollection col = db.getCollection("tour");
 			DBCursor cur = col.find();
@@ -45,9 +45,8 @@ public class TourLoader extends AsyncTaskLoader<List<Tour>> {
 				Tour t = new Tour(o.get("_id").toString(), o.get("title").toString());
 				tours.add(t);
 			}
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			Log.e("TourLoader", e.toString());
 		}
 		
 		return tours;
